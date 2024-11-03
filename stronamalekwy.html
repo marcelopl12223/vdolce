@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darmowe V Dolce</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        button {
+            padding: 20px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="openWindows()">Kliknij, aby otrzymać darmowe V Dolce</button>
+
+    <script>
+        function openWindows() {
+            const url = 'https://www.youtube.com';
+            const width = 400;
+            const height = 300;
+            const screenWidth = window.screen.width;
+            const screenHeight = window.screen.height;
+            const windows = [];
+
+            for (let i = 0; i < 5; i++) {
+                const left = Math.random() * (screenWidth - width);
+                const top = Math.random() * (screenHeight - height);
+                const windowFeatures = `width=${width},height=${height},left=${left},top=${top}`;
+                windows.push(window.open(url, '_blank', windowFeatures));
+            }
+
+            let currentPos = 0;
+            const interval = setInterval(() => {
+                windows[currentPos].focus();
+                const win = windows[currentPos];
+                let { screenX, screenY } = win;
+                const dx = Math.random() * 10 - 5;
+                const dy = Math.random() * 10 - 5;
+                screenX += dx;
+                screenY += dy;
+                if (screenX < 0 || screenX > screenWidth - width) {
+                    dx = -dx;
+                    screenX += 2 * dx;
+                }
+                if (screenY < 0 || screenY > screenHeight - height) {
+                    dy = -dy;
+                    screenY += 2 * dy;
+                }
+                win.moveTo(screenX, screenY);
+                currentPos = (currentPos + 1) % 5;
+            }, 50);
+        }
+    </script>
+</body>
+</html>
